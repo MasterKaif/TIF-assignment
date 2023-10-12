@@ -27,6 +27,6 @@ app.listen(serverConfig.PORT, serverConfig.HOST, () => {
 	//1.
 	createRoutes(app);
 	if (serverConfig.ENV === "dev") {
-		initializeTables(true);
+		initializeTables(false);
 	}
 })();

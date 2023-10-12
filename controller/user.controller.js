@@ -25,11 +25,7 @@ exports.login = (req, res) => {
 	userRepository
 		.fetchUserByCriteria({
 			where: {
-				[Op.or]: [
-					{
-						email: req.body.email,
-					},
-				],
+				email: req.body.email,
 			},
 		})
 		.then(async (user) => {
@@ -45,8 +41,7 @@ exports.login = (req, res) => {
 				return;
 			}
 			return authService.getAuthToken({
-				username: user.username,
-				permission: user.permission,
+				email: user.email,
 			});
 		})
 		.then((result) => {
@@ -65,7 +60,13 @@ exports.login = (req, res) => {
 };
 
 exports.getMyDetails = (req, res) => {
-    
+	const user = req.user;
+	if (!user) {
+		res.status(500).send({
+			message: "Something went wrong please try again !!",
+		});
+	}
+	res.status(200).send(user);
 };
 
 const encryptPassword = async (password) => {
